@@ -1,0 +1,12 @@
+.DS_Store
+/.build
+/Packages
+Package.resolved
+xcuserdata/
+DerivedData/
+.swiftpm/
+node_modules/
+.next/
+out/
+.env*.local
+.vercel
