@@ -1,5 +1,7 @@
 # Beacon — Swift Analytics SDK
 
+<img width="384" height="256" alt="swift_beacon" src="https://github.com/user-attachments/assets/456179c5-f3ea-4d07-a1fb-9a4142ac6486" />
+
 Analytics for Swift apps that just works. Track user behavior that matters without the complexity.
 
 Add Beacon to any macOS or iOS project with Swift Package Manager, point it at a Supabase table, and start tracking. Events are batched, persisted offline, and enriched with device context automatically. A included web dashboard lets you see everything at a glance.
