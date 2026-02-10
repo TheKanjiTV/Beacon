@@ -1,4 +1,4 @@
-# Beacon
+# Beacon — Swift Analytics SDK
 
 A lightweight, Swift-first analytics SDK backed by Supabase. Track events from any macOS or iOS app with a simple API, and visualize them in a real-time web dashboard.
 
