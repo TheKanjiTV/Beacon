@@ -7,6 +7,8 @@ A lightweight, Swift-first analytics SDK backed by Supabase. Track events from a
 - **Swift-native SDK** — import via SPM, fire-and-forget API that never blocks your app
 - **Actor-based concurrency** — fully thread-safe with Swift's structured concurrency
 - **Automatic batching** — events are buffered and flushed in batches (configurable threshold and interval)
+- **Offline resilience** — unflushed events are persisted to disk and retried on next launch
+- **Debug logging** — toggle `os_log` output to see exactly what Beacon is sending
 - **Device enrichment** — every event is automatically tagged with OS, app version, device model, and locale
 - **Supabase backend** — zero server code to maintain, just a Postgres table with RLS
 - **Web dashboard** — Next.js + TailwindCSS with Apple glassmorphism design
@@ -16,35 +18,8 @@ A lightweight, Swift-first analytics SDK backed by Supabase. Track events from a
 ### 1. Set Up Supabase
 
 1. Create a project at [supabase.com](https://supabase.com)
-2. Open the SQL Editor and run the contents of [`supabase/schema.sql`](supabase/schema.sql):
-
-```sql
-CREATE TABLE events (
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    event_name TEXT NOT NULL,
-    user_id TEXT,
-    session_id TEXT NOT NULL,
-    properties JSONB,
-    device_info JSONB,
-    timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
-CREATE INDEX idx_events_event_name ON events(event_name);
-CREATE INDEX idx_events_user_id ON events(user_id);
-CREATE INDEX idx_events_session_id ON events(session_id);
-CREATE INDEX idx_events_timestamp ON events(timestamp DESC);
-
-ALTER TABLE events ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Allow anonymous inserts" ON events
-    FOR INSERT TO anon WITH CHECK (true);
-
-CREATE POLICY "Allow service role full access" ON events
-    FOR ALL TO service_role USING (true) WITH CHECK (true);
-```
-
-3. Copy your **Project URL** and **anon public key** from Settings → API.
+2. Open the SQL Editor and run the contents of [`supabase/schema.sql`](supabase/schema.sql)
+3. Copy your **Project URL** and **anon public key** from Settings → API
 
 ### 2. Add the SDK to Your App
 
@@ -77,9 +52,11 @@ Beacon.track("button_tapped", properties: ["screen": "settings", "button": "save
 // Identify users (optional)
 Beacon.identify(userId: "user-123", traits: ["plan": "pro"])
 
-// Flush manually before app terminates (optional — auto-flushes on interval)
-Beacon.flush()
+// Flush before app terminates (optional — auto-flushes on interval)
+Beacon.shutdown()
 ```
+
+See [`Examples/BasicUsage.swift`](Examples/BasicUsage.swift) for a complete macOS app example.
 
 ## SDK API Reference
 
@@ -118,11 +95,32 @@ Beacon.identify(userId: "user-123", traits: ["plan": "pro", "signup_source": "or
 
 ### `Beacon.flush()`
 
-Immediately flush all buffered events to Supabase. Useful before app termination.
+Immediately flush all buffered events to Supabase.
 
 ### `Beacon.shutdown()`
 
-Flush remaining events, cancel the flush timer, and tear down the client.
+Flush remaining events, cancel the flush timer, and tear down the client. Call before app termination.
+
+### `Beacon.enableLogging()`
+
+Turn on debug logging via `os_log`. Shows queued events, flush attempts, errors, and disk persistence activity.
+
+```swift
+// Enable during development
+Beacon.enableLogging()
+
+// Disable
+Beacon.enableLogging(false)
+```
+
+## Offline Resilience
+
+If a flush fails (network error, Supabase downtime), events are automatically:
+1. Re-queued in memory for the next flush attempt
+2. Persisted to `~/Library/Caches/Beacon/pending_events.json`
+3. Restored on next app launch and flushed with the first batch
+
+No events are lost between sessions.
 
 ## Event Schema
 
@@ -202,6 +200,7 @@ Set the environment variables in your Vercel project settings.
 - **Beacon (enum)** — Public static API, fire-and-forget
 - **BeaconClient (actor)** — Singleton owning config, queue, user identity, session
 - **EventQueue (actor)** — Buffers events, flushes at threshold or interval via PostgREST
+- **DiskQueue (actor)** — Persists unflushed events to disk for offline resilience
 - **DeviceInfo** — Auto-collects OS, version, device model, locale
 - **BeaconEvent** — Codable model with snake_case keys matching Postgres columns
 

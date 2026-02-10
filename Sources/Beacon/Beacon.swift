@@ -38,4 +38,8 @@ public enum Beacon {
     public static func shutdown() {
         Task { await BeaconClient.shared.shutdown() }
     }
+
+    public static func enableLogging(_ enabled: Bool = true) {
+        BeaconLogger.isEnabled = enabled
+    }
 }

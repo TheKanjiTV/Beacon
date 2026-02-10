@@ -7,6 +7,7 @@ actor EventQueue {
     private let flushAt: Int
     private let flushInterval: TimeInterval
     private var timerTask: Task<Void, Never>?
+    private let diskQueue = DiskQueue()
 
     init(client: PostgrestClient, flushAt: Int, flushInterval: TimeInterval) {
         self.client = client
@@ -14,12 +15,18 @@ actor EventQueue {
         self.flushInterval = flushInterval
     }
 
-    func start() {
+    func start() async {
+        let persisted = await diskQueue.load()
+        if !persisted.isEmpty {
+            buffer.insert(contentsOf: persisted, at: 0)
+            BeaconLogger.log("Restored \(persisted.count) events from previous session")
+        }
         startTimer()
     }
 
     func add(event: BeaconEvent) async {
         buffer.append(event)
+        BeaconLogger.log("Queued '\(event.eventName)' (\(buffer.count)/\(flushAt))")
         if buffer.count >= flushAt {
             await flush()
         }
@@ -30,11 +37,16 @@ actor EventQueue {
         let events = buffer
         buffer.removeAll()
 
+        BeaconLogger.log("Flushing \(events.count) events...")
+
         do {
             try await client.from("events").insert(events).execute()
+            BeaconLogger.log("Flushed \(events.count) events successfully")
+            await diskQueue.save([])
         } catch {
-            // Re-add events on failure so they aren't lost
+            BeaconLogger.error("Flush failed: \(error.localizedDescription) — re-queuing \(events.count) events")
             buffer.insert(contentsOf: events, at: 0)
+            await diskQueue.save(buffer)
         }
     }
 
@@ -42,6 +54,9 @@ actor EventQueue {
         timerTask?.cancel()
         timerTask = nil
         await flush()
+        if !buffer.isEmpty {
+            await diskQueue.save(buffer)
+        }
     }
 
     private func startTimer() {

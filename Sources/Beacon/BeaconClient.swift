@@ -31,10 +31,15 @@ actor BeaconClient {
         )
         self.eventQueue = queue
         await queue.start()
+
+        BeaconLogger.log("Configured — session \(sessionId), flush at \(config.flushAt) / \(Int(config.flushInterval))s")
     }
 
     func track(_ eventName: String, properties: [String: AnyCodable]? = nil) async {
-        guard let queue = eventQueue else { return }
+        guard let queue = eventQueue else {
+            BeaconLogger.error("track('\(eventName)') called before configure()")
+            return
+        }
 
         let event = BeaconEvent(
             eventName: eventName,
@@ -49,6 +54,7 @@ actor BeaconClient {
 
     func identify(userId: String, traits: [String: AnyCodable]? = nil) async {
         self.userId = userId
+        BeaconLogger.log("Identified user: \(userId)")
 
         if let traits = traits {
             await track("identify", properties: traits)
@@ -63,5 +69,6 @@ actor BeaconClient {
         await eventQueue?.shutdown()
         eventQueue = nil
         config = nil
+        BeaconLogger.log("Shut down")
     }
 }
